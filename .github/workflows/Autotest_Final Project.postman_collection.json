@@ -1,0 +1,250 @@
+{
+	"info": {
+		"_postman_id": "5c3cdc8d-755e-4c02-aaea-1c18607ce7d0",
+		"name": "Autotest_Final Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44039458",
+		"_collection_link": "https://nadiagracia.postman.co/workspace/nadia-gracia's-Workspace~c3dd935a-161a-4333-8e85-7b769caed588/collection/44039458-5c3cdc8d-755e-4c02-aaea-1c18607ce7d0?action=share&source=collection_link&creator=44039458"
+	},
+	"item": [
+		{
+			"name": "Current Weather Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"City name is correct\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.name).to.eql(\"Medan\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Invalid city name returns 404\", function () {\r",
+							"    pm.sendRequest({\r",
+							"        url: \"https://api.openweathermap.org/data/2.5/weather?q=wrongcity&appid=a4918a6e9d0349d5603906a1a7d691be\",\r",
+							"        method: \"GET\"\r",
+							"    }, function (err, res) {\r",
+							"        pm.expect(res).to.have.status(404);\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains weather information\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.have.property(\"weather\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.openweathermap.org/data/2.5/weather?q=Medan&appid=a4918a6e9d0349d5603906a1a7d691be",
+					"protocol": "https",
+					"host": [
+						"api",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "Medan"
+						},
+						{
+							"key": "appid",
+							"value": "a4918a6e9d0349d5603906a1a7d691be"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Weather Forecast Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test 1: Memastikan status code response utama adalah 200 (OK)\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test 2: Memastikan waktu respon API kurang dari 300ms\r",
+							"pm.test(\"Response time is less than 300ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+							"});\r",
+							"\r",
+							"// Test 3: Memastikan response memiliki property \"list\" dan bertipe array\r",
+							"// Property ini adalah daftar data cuaca perkiraan (forecast) dari OpenWeatherMap\r",
+							"pm.test(\"Forecast contains list of data\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.have.property(\"list\").and.to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"// Test 4: Menguji response untuk kota yang tidak valid\r",
+							"// Mengirim request baru secara manual menggunakan pm.sendRequest()\r",
+							"// Lalu memastikan API mengembalikan status 404 (city not found)\r",
+							"pm.test(\"Invalid city name returns 404\", function () {\r",
+							"    pm.sendRequest({\r",
+							"        url: \"https://api.openweathermap.org/data/2.5/forecast?q=invalidcity&appid=a4918a6e9d0349d5603906a1a7d691be\",\r",
+							"        method: \"GET\"\r",
+							"    }, function (err, res) {\r",
+							"        pm.expect(res).to.have.status(404);\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"// Test 5: Memastikan response memiliki informasi kota\r",
+							"// Bagian \"city\" biasanya berisi nama kota, koordinat, dan timezone\r",
+							"pm.test(\"Forecast contains city information\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.have.property(\"city\");\r",
+							"}); \r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.openweathermap.org/data/2.5/forecast?q=&appid=a4918a6e9d0349d5603906a1a7d691be",
+					"protocol": "https",
+					"host": [
+						"api",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"forecast"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": ""
+						},
+						{
+							"key": "appid",
+							"value": "a4918a6e9d0349d5603906a1a7d691be"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Weather by Coordinate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test 1: Mengecek apakah status code 200 (berhasil)\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test 2: Mengecek apakah response time < 2000ms\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"// Test 3: Mengecek apakah koordinat mengembalikan kota yang benar (Medan)\r",
+							"pm.test(\"Coordinates return correct city\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.name).to.eql(\"Medan\");\r",
+							"});\r",
+							"\r",
+							"// Test 4: Koordinat tidak valid → harus 400\r",
+							"pm.test(\"Invalid coordinates return 400\", function () {\r",
+							"    pm.sendRequest({\r",
+							"        url: \"https://api.openweathermap.org/data/2.5/weather?lat=999&lon=999&appid=a4918a6e9d0349d5603906a1a7d691be\",\r",
+							"        method: \"GET\"\r",
+							"    }, function (err, res) {\r",
+							"\r",
+							"        // Jika status bukan 400 → paksa FAILED\r",
+							"        if (res.code !== 400) {\r",
+							"            pm.test(\"Failed koordinat tidak valid\", function () {\r",
+							"                pm.expect(false).to.be.true; // dipaksa gagal\r",
+							"            });\r",
+							"        } else {\r",
+							"            pm.expect(res.code).to.eql(400);\r",
+							"        }\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"// Test 5: Mengecek apakah response mengandung deskripsi cuaca\r",
+							"pm.test(\"Response contains weather description\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.weather[0]).to.have.property(\"description\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.openweathermap.org/data/2.5/weather?lat=3.5833&lon=98.6667&appid=a4918a6e9d0349d5603906a1a7d691be",
+					"protocol": "https",
+					"host": [
+						"api",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "lat",
+							"value": "3.5833"
+						},
+						{
+							"key": "lon",
+							"value": "98.6667"
+						},
+						{
+							"key": "appid",
+							"value": "a4918a6e9d0349d5603906a1a7d691be"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
