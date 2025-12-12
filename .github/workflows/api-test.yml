@@ -24,8 +24,8 @@ jobs:
 
       - name: Run Postman Tests
         run: |
-          newman run "Autotest_Final Project.postman_collection.json" \
-            --reporters cli,htmlextra \
+          newman run "Autotest_Final Project.postman_collection.json" \
+            --reporters cli, htmlextra \
             --reporter-htmlextra-export weather-test-report.html
 
       - name: Upload Test Report
