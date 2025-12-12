@@ -1,4 +1,4 @@
-name: "Autotest_Final Project.json"
+name: API Testing - Autotest Final Project
 
 on:
   push:
@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "18"
 
@@ -29,7 +29,7 @@ jobs:
             --reporter-htmlextra-export weather-test-report.html
 
       - name: Upload Test Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: weather-api-test-report
           path: weather-test-report.html
