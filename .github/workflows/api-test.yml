@@ -1,0 +1,35 @@
+name: "Autotest_Final Project.json"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  run-api-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install Newman + HTML Reporter
+        run: |
+          npm install -g newman newman-reporter-htmlextra
+
+      - name: Run Postman Tests
+        run: |
+          newman run "Autotest_Final Project.json" \
+            --reporters cli,htmlextra \
+            --reporter-htmlextra-export weather-test-report.html
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: weather-api-test-report
+          path: weather-test-report.html
